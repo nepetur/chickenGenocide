@@ -8,7 +8,7 @@ namespace ChickenGenocide{
 
         private static AudioClip deathSound;
         
-        public bool isDead {get; private set;}
+        public bool IsDead {get; private set;}
 
         private const float scaleAnimationPopUpDelta = 2f;
 
@@ -23,10 +23,24 @@ namespace ChickenGenocide{
             animations = Resources.LoadAll<AnimationClip>("ChickenAnimations");
         }
 
+        private void OnEnable(){
+            var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
+
+            var o = new KeyValuePair<AnimationClip, AnimationClip>[1];
+
+            var newAnim = animations[ Random.Range(0, animations.Length) ];
+
+            o[0] = new(aoc.animationClips[0], newAnim);
+
+            aoc.ApplyOverrides(o);
+
+            animator.runtimeAnimatorController = aoc;
+        }
+
         public void Spawn(){
             gameObject.SetActive(true);
 
-            isDead = false;
+            IsDead = false;
 
             StartCoroutine(Appear(true));
         }
@@ -36,7 +50,7 @@ namespace ChickenGenocide{
 
             GameManager.Current.PlaySound(deathSound);
 
-            isDead = true;
+            IsDead = true;
 
             StartCoroutine(Appear(false));
         }
@@ -55,20 +69,6 @@ namespace ChickenGenocide{
             }
 
             if(!value) gameObject.SetActive(false);
-        }
-
-        private void OnEnable(){
-            var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
-
-            var o = new KeyValuePair<AnimationClip, AnimationClip>[1];
-
-            var newAnim = animations[ Random.Range(0, animations.Length) ];
-
-            o[0] = new(aoc.animationClips[0], newAnim);
-
-            aoc.ApplyOverrides(o);
-
-            animator.runtimeAnimatorController = aoc;
         }
     }
 }
