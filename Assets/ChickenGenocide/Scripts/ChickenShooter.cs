@@ -37,7 +37,7 @@ namespace ChickenGenocide{
 
             GameManager.Current.PlaySound(shootSound);
 
-            shootDelay = .25f;
+            shootDelay = .1f;
 
             hitEffect.Play();
 
