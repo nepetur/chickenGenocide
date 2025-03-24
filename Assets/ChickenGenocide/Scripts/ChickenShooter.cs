@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
 
 namespace ChickenGenocide{
     public class ChickenShooter : MonoBehaviour{
-        [Space, SerializeField] private AudioClip shootSound;
+        [Serializable] private struct Sounds{
+            public AudioClip shoot, worldHit, chickenHit;
+        }
+
+        [Space, SerializeField] private Sounds sounds;
 
         [Space, SerializeField] private ParticleSystem hitEffect;
         
@@ -16,16 +21,13 @@ namespace ChickenGenocide{
         }
 
         private void Update(){
-            var canShoot = shootDelay <= 0;
+            if(shootDelay > 0) shootDelay -= Time.deltaTime;
 
-            if(Crosshair.Current) Crosshair.Current.halfSized = !canShoot;
+            var canShoot = shootDelay <= 0 && !BulletManager.Current.IsReloading;
 
-            if(canShoot){
-                if(click) Shoot();
-            }
-            else{
-                shootDelay -= Time.deltaTime;
-            }
+            Crosshair.Current.IsActive = canShoot;
+
+            if(click && canShoot) Shoot();
         }
 
         private void Shoot(){
@@ -35,18 +37,24 @@ namespace ChickenGenocide{
 
             var chicken = raycast ? hit.transform.GetComponentInParent<Chicken>() : null;
 
-            GameManager.Current.PlaySound(shootSound);
+            GameManager.Current.PlaySound(sounds.shoot);
+
+            if(raycast){
+                GameManager.Current.PlaySound(chicken ? sounds.chickenHit : sounds.worldHit);
+            }
+
+            BulletManager.Current.RemoveBullet();
 
             shootDelay = .1f;
 
             hitEffect.Play();
 
-            hitEffect.transform.position = raycast ? hit.point : ray.GetPoint(25);
+            hitEffect.transform.position = raycast ? hit.point : ray.GetPoint(15);
 
             string message;
 
             if(chicken && !chicken.IsDead){
-                chicken.Die();
+                chicken.Die(true);
 
                 message = "<color=green>+15";
             }

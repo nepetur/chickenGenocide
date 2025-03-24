@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ChickenGenocide{
     public class HorizontalCamera : MonoBehaviour{
-        [Space, SerializeField] private float mouseDeltaX, speed, acceleration, limit;
+        [Space, SerializeField] private float speed, acceleration, limit;
 
         private float velocity;
 
@@ -11,9 +11,15 @@ namespace ChickenGenocide{
         }
 
         private void Move(){
-            var mouse = Input.mousePosition;
+            var mouseX = Input.mousePosition.x;
+            
+            const float delta = 15;
 
-            var direction = mouse.x < mouseDeltaX ? -1 : mouse.x > Screen.width - mouseDeltaX ? 1 : 0;
+            var direction = mouseX < delta ? -1 : mouseX > Screen.width - delta ? 1 : 0;
+
+            // smooth movement
+            // var delta = Screen.width / 3;
+            // var direction = -Mathf.Cos(Mathf.PI * (mouseX / Screen.width));
 
             velocity = Mathf.Lerp(velocity, direction * speed, Time.deltaTime * acceleration);
 

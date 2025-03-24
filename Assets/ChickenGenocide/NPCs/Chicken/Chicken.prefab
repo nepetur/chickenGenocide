@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a729683632c9e24ca16d428fd87f4e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 1437434401714760388}
+  IsFlying: 0
   animator: {fileID: 255431872152896569}
 --- !u!1001 &5972314369621244328
 PrefabInstance:
@@ -103,6 +103,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d65e0d0472c0dfa458d4b635c92cab8a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 409fa24511eeb634daaf2e107f8081b4, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -129,11 +133,6 @@ PrefabInstance:
 --- !u!95 &255431872152896569 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 409fa24511eeb634daaf2e107f8081b4, type: 3}
-  m_PrefabInstance: {fileID: 5972314369621244328}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &1437434401714760388 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -4534237801304140948, guid: 409fa24511eeb634daaf2e107f8081b4, type: 3}
   m_PrefabInstance: {fileID: 5972314369621244328}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4023079493238421923 stripped

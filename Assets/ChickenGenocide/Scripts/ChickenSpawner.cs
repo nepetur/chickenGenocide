@@ -15,6 +15,14 @@ namespace ChickenGenocide{
         private List<Chicken> chickens = new();
 
         private void Update(){
+            foreach(var c in chickens){
+                if(c.enabled == false || c.IsDead) continue;
+
+                var x = Mathf.Abs(c.transform.localPosition.x);
+
+                if(x > bounds.x / 2) c.Die(false);
+            }
+
             if(delay == 0){
                 Spawn();
             }
@@ -24,19 +32,36 @@ namespace ChickenGenocide{
         }
 
         private void Spawn(){
+            delay = spawnDelay;
+
             var chicken = GetOrCreate();
 
             if(chicken == null) return;
 
-            delay = spawnDelay;
+            var flying = Random.Range(0, 3) == 0;
 
-            chicken.Spawn();
+            chicken.enabled = flying;
 
             var range = bounds / 2;
 
-            chicken.transform.localPosition = new Vector3(
-                Random.Range(-range.x, range.x), 0, Random.Range(-range.z, range.z)
-            );
+            if(flying){
+                var direction = Random.Range(0, 2) == 0 ? 1 : -1;
+
+                chicken.transform.localEulerAngles = Vector3.up * 90 * direction;
+
+                chicken.transform.localPosition = new Vector3(
+                    range.x * direction, Random.Range(range.y, bounds.y), Random.Range(-range.z, range.z)
+                );
+            }
+            else{
+                chicken.transform.localPosition = new Vector3(
+                    Random.Range(-range.x, range.x), 0, Random.Range(-range.z, range.z)
+                );
+
+                chicken.transform.localEulerAngles = Vector3.zero;
+            }
+
+            chicken.Spawn();
         }
 
         private Chicken GetOrCreate(){
