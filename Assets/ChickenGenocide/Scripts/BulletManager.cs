@@ -9,7 +9,7 @@ namespace ChickenGenocide{
 
         private int bulletCount;
 
-        private bool HasBullets = true;
+        private int removingSequence = 0;
 
         public bool IsReloading {get; private set;}
 
@@ -24,13 +24,19 @@ namespace ChickenGenocide{
 
             StartCoroutine(Removing());
 
-            if(bulletCount == 0) StartCoroutine(Reloading());
+            if(bulletCount == 0) Reload();
+        }
+
+        public void Reload(){
+            if(bulletCount == transform.childCount || IsReloading) return;
+
+            StartCoroutine(Reloading());
         }
 
         private IEnumerator Removing(){
-            var index = transform.childCount - bulletCount - 1;
+            removingSequence++;
 
-            var bullet = transform.GetChild(index).GetChild(0);
+            var bullet = transform.GetChild(transform.childCount - bulletCount - 1).GetChild(0);
 
             GameManager.Current.PlaySound(removeSound);
 
@@ -42,19 +48,17 @@ namespace ChickenGenocide{
                 yield return null;
             }
 
-            if(index == transform.childCount - 1) HasBullets = false;
+            removingSequence--;
         }
 
         private IEnumerator Reloading(){
             IsReloading = true;
 
             yield return new WaitUntil(
-                () => HasBullets == false
+                () => removingSequence == 0
             );
 
-            HasBullets = true;
-
-            for(int i = transform.childCount - 1; i >= 0; i--){
+            for(int i = transform.childCount - bulletCount - 1; i >= 0; i--){
                 var bullet = transform.GetChild(i).GetChild(0);
 
                 bullet.localPosition = Vector3.zero;
@@ -65,7 +69,7 @@ namespace ChickenGenocide{
 
                 GameManager.Current.PlaySound(reloadSound);
 
-                for(float time = 0; time <= 1; time += Time.deltaTime * 2.5f){
+                for(float time = 0; time <= 1; time += Time.deltaTime * 3f){
                     bullet.localScale = Vector3.one * Animations.EaseOutBack(time, 2);
 
                     yield return null;

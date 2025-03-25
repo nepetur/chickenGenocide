@@ -19,6 +19,10 @@ namespace ChickenGenocide{
             Cursor.visible = false;
         }
 
+        private void OnDisable(){
+            Cursor.visible = true;
+        }
+
         private void Update(){
             transform.position = Input.mousePosition;
 

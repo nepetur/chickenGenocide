@@ -4,7 +4,7 @@ namespace ChickenGenocide{
     [CreateAssetMenu] public class GameManager : ScriptableObject{
         public static GameManager Current {get; private set;}
 
-        public GameComponents gameComponents {get; private set;}
+        private GameComponents gameComponents;
 
         [
             RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)
@@ -24,5 +24,19 @@ namespace ChickenGenocide{
         }
 
         public void PlaySound(AudioClip audioClip) => gameComponents.AudioSource.PlayOneShot(audioClip);
+
+        public bool Paused{
+            set{
+                Time.timeScale = value ? 0 : 1;
+
+                gameComponents.AudioSource.pitch = Time.timeScale;
+            }
+        }
+
+        public void Pause() => Paused = true;
+
+        public void Resume() => Paused = false;
+
+        public void Quit() => Application.Quit();
     }
 }

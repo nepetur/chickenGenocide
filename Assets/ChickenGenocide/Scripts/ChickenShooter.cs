@@ -13,15 +13,20 @@ namespace ChickenGenocide{
         
         private Camera mainCamera;
         private bool click => Input.GetMouseButtonDown(0);
+        private bool rightMouseClick => Input.GetMouseButtonDown(1);
 
         private float shootDelay;
 
         private void Awake(){
             mainCamera = Camera.main;
+
+            GameManager.Current.Resume();
         }
 
         private void Update(){
             if(shootDelay > 0) shootDelay -= Time.deltaTime;
+
+            if(rightMouseClick) BulletManager.Current.Reload();
 
             var canShoot = shootDelay <= 0 && !BulletManager.Current.IsReloading;
 
@@ -55,6 +60,8 @@ namespace ChickenGenocide{
 
             if(chicken && !chicken.IsDead){
                 chicken.Die(true);
+
+                ScoreManager.Current.Score += 15;
 
                 message = "<color=green>+15";
             }
