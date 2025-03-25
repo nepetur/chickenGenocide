@@ -13,8 +13,14 @@ namespace ChickenGenocide{
                 score = value;
 
                 viewer.text = score.ToString();
+
+                animation = 1;
+
+                enabled = true;
             }
         }
+
+        private new float animation;
 
         private TextMeshProUGUI viewer;
 
@@ -22,6 +28,17 @@ namespace ChickenGenocide{
             Current = this;
 
             viewer = GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+
+        private void Update(){
+            animation = Mathf.MoveTowards(animation, 0, Time.deltaTime * 2.5f);
+
+            var scale = 1.35f - .35f * Mathf.Cos(2 * Mathf.PI * animation);
+
+            viewer.transform.localScale = Vector3.one * scale;
+
+            if(animation == 0) enabled = false;
         }
     }
 }

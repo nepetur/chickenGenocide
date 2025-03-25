@@ -17,10 +17,6 @@ namespace ChickenGenocide{
 
             var direction = mouseX < delta ? -1 : mouseX > Screen.width - delta ? 1 : 0;
 
-            // smooth movement
-            // var delta = Screen.width / 3;
-            // var direction = -Mathf.Cos(Mathf.PI * (mouseX / Screen.width));
-
             velocity = Mathf.Lerp(velocity, direction * speed, Time.deltaTime * acceleration);
 
             var x = Mathf.Clamp(transform.position.x + (velocity * Time.deltaTime), -limit, limit);

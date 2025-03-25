@@ -6,7 +6,6 @@ namespace ChickenGenocide{
         [Serializable] private struct Sounds{
             public AudioClip shoot, worldHit, chickenHit;
         }
-
         [Space, SerializeField] private Sounds sounds;
 
         [Space, SerializeField] private ParticleSystem hitEffect;
@@ -28,7 +27,7 @@ namespace ChickenGenocide{
 
             if(rightMouseClick) BulletManager.Current.Reload();
 
-            var canShoot = shootDelay <= 0 && !BulletManager.Current.IsReloading;
+            var canShoot = !GameManager.Current.Paused && shootDelay <= 0 && !BulletManager.Current.IsReloading;
 
             Crosshair.Current.IsActive = canShoot;
 

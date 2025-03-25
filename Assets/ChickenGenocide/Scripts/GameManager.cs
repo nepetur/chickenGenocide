@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ChickenGenocide{
     [CreateAssetMenu] public class GameManager : ScriptableObject{
@@ -26,10 +27,10 @@ namespace ChickenGenocide{
         public void PlaySound(AudioClip audioClip) => gameComponents.AudioSource.PlayOneShot(audioClip);
 
         public bool Paused{
+            get => Time.timeScale == 0;
+            
             set{
                 Time.timeScale = value ? 0 : 1;
-
-                gameComponents.AudioSource.pitch = Time.timeScale;
             }
         }
 
@@ -38,5 +39,7 @@ namespace ChickenGenocide{
         public void Resume() => Paused = false;
 
         public void Quit() => Application.Quit();
+
+        public void LoadScene(string scene) => SceneTransition.Current.ChangeScene(scene);
     }
 }

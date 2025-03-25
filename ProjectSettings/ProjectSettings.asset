@@ -15,7 +15,7 @@ PlayerSettings:
   companyName: DefaultCompany
   productName: ChickenGenocide
   defaultCursor: {fileID: 0}
-  cursorHotspot: {x: 125, y: 125}
+  cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1

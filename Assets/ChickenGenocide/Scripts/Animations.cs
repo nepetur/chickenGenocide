@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace ChickenGenocide{
     public static class Animations{
+        public static float EaseInOutSine(float time){
+            return -(Mathf.Cos(Mathf.PI * time) - 1) / 2;
+        }
+
         public static float EaseOutBack(float time, float delta){
             return 1 + (delta + 1) * Mathf.Pow(time - 1, 3) + delta * Mathf.Pow(time - 1, 2);
         }
